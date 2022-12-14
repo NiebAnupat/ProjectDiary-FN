@@ -4,8 +4,8 @@
       <v-toolbar-title class="mx-4"> My Diary </v-toolbar-title>
 
       <div class="mx-6">
-        <v-btn text>หน้าหลัก</v-btn>
-        <v-btn text>บันทึก</v-btn>
+        <v-btn text to="/">บันทึกทั้งหมด</v-btn>
+        <v-btn text to="/record">บันทึกใหม่</v-btn>
       </div>
 
       <v-spacer></v-spacer>
@@ -49,7 +49,9 @@
           </v-card-text>
 
           <v-card-actions class="d-flex justify-center mt-6">
-            <v-btn block dark v-on:click="login">เข้าสู่ระบบ</v-btn>
+            <v-btn block dark v-on:click="LoaderOptionsPlugin"
+              >เข้าสู่ระบบ</v-btn
+            >
           </v-card-actions>
 
           <v-divider class="ma-5"></v-divider>
@@ -58,7 +60,9 @@
           <v-row class="mt-n8">
             <v-col cols="6">
               <v-card-actions class="d-flex justify-center">
-                <v-btn text>ลืมรหัสผ่าน</v-btn>
+                <v-btn text @click=";(forgetDia = true), (loginDia = false)"
+                  >ลืมรหัสผ่าน</v-btn
+                >
               </v-card-actions>
             </v-col>
             <v-col cols="6">
@@ -84,9 +88,10 @@
           <v-card-text class="mt-10">
             <!-- Input Name -->
             <v-text-field
-              prepend-inner-icon="mdi-email"
+              prepend-inner-icon="mdi-account"
               v-model="username"
               label="ชื่อผู้ใช้"
+              :rules="usernameRules"
               required
             ></v-text-field>
 
@@ -95,6 +100,7 @@
               prepend-inner-icon="mdi-email"
               v-model="email"
               label="อีเมล"
+              :rules="emailRules"
               required
             ></v-text-field>
 
@@ -103,6 +109,7 @@
               prepend-inner-icon="mdi-lock"
               v-model="password"
               label="รหัสผ่าน"
+              :rules="passwordRules"
               :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
               :type="show1 ? 'text' : 'password'"
               @click:append="show1 = !show1"
@@ -110,21 +117,47 @@
           </v-card-text>
 
           <!-- Regiter Buttons -->
-          <v-row>
-            <v-col cols="6">
-              <v-card-actions class="d-flex justify-center">
-                <v-btn text @click=";(registerDia = False), (loginDia = true)"
-                  >ยกเลิก</v-btn
-                >
-              </v-card-actions>
-            </v-col>
 
-            <v-col cols="6">
-              <v-card-actions class="d-flex justify-center">
-                <v-btn text>ตกลง</v-btn>
-              </v-card-actions>
-            </v-col>
-          </v-row>
+          <v-card-actions class="d-flex justify-center mt-10">
+            <v-btn text @click=";(registerDia = false), (loginDia = true)"
+              >ยกเลิก</v-btn
+            >
+            <v-spacer></v-spacer>
+            <v-btn text>ตกลง</v-btn>
+          </v-card-actions>
+
+          <v-card-actions class="d-flex justify-center"> </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </div>
+
+    <!-- Forget Pass Dialog -->
+    <div>
+      <v-dialog v-model="forgetDia" max-width="350">
+        <v-card height="450" class="pa-4">
+          <div class="d-flex">
+            <v-card-actions>
+              <v-btn icon @click=";(forgetDia = false), (loginDia = true)"
+                ><v-icon>mdi-arrow-left</v-icon></v-btn
+              >
+            </v-card-actions>
+            <v-card-title class="mx-12"> ลืมรหัสผ่าน </v-card-title>
+          </div>
+
+          <v-card-text class="mt-10">
+            <label>กรุณาใส่อีเมลที่ใช้ลงทะเบียน</label>
+            <v-text-field
+              class="mt-16"
+              prepend-inner-icon="mdi-email"
+              v-model="fgEmail"
+              label="อีเมล"
+              :rules="emailRules"
+              required
+            ></v-text-field
+          ></v-card-text>
+          <v-card-actions>
+            <v-btn dark block class="mt-16">ยืนยัน</v-btn>
+          </v-card-actions>
         </v-card>
       </v-dialog>
     </div>
@@ -144,7 +177,23 @@ export default {
     return {
       loginDia: false,
       registerDia: false,
+      forgetDia: false,
       show1: false,
+      username: '',
+      email: '',
+      password: '',
+      fgEmail: '',
+      usernameRules: [(v) => !!v || 'กรุณาใส่ชื่อผู้ใช้'],
+      emailRules: [
+        (v) => !!v || 'กรุณาใส่อีเมล',
+        (v) =>
+          /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+          'อีเมลไม่ถูกต้อง',
+      ],
+      passwordRules: [
+        (v) => !!v || 'กรุณาใส่รหัสผ่าน',
+        (v) => (v && v.length >= 8) || 'รหัสผ่านต้องมีอย่างน้อย 8 ตัว',
+      ],
     }
   },
 
