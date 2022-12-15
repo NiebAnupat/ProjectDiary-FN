@@ -43,7 +43,7 @@
         </v-card-text>
         <v-card-actions class="mt-n6">
           <v-spacer></v-spacer>
-          <v-btn dark>
+          <v-btn dark @click=";(fail = false), (success = true)">
             <v-icon>mdi-arrow-up-bold</v-icon>
             บันทึก
           </v-btn>
@@ -63,6 +63,27 @@
         ></v-textarea>
       </v-card-text>
     </v-card>
+
+    <!-- Snackbar -->
+    <div>
+      <v-snackbar v-model="success" color="success" timeout="3000">
+        บันทึกสำเร็จ
+        <template v-slot:action="{ attrs }">
+          <v-btn text color="white" v-bind="attrs" @click="snackbar = false">
+            ปิด
+          </v-btn>
+        </template>
+      </v-snackbar>
+
+      <v-snackbar v-model="fail" color="red" timeout="3000">
+        บันทึกไม่สำเร็จ
+        <template v-slot:action="{ attrs }">
+          <v-btn text color="white" v-bind="attrs" @click="snackbar = false">
+            ปิด
+          </v-btn>
+        </template>
+      </v-snackbar>
+    </div>
   </div>
 </template>
 
@@ -72,6 +93,8 @@ export default {
 
   data() {
     return {
+      success: false,
+      fail: false,
       date: null,
       datePicker: false,
     }

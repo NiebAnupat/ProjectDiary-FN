@@ -5,13 +5,14 @@
 
       <div class="mx-6">
         <v-btn text to="/">บันทึกทั้งหมด</v-btn>
+        <v-btn text to="/today">บันทึกวันนี้</v-btn>
         <v-btn text to="/record">บันทึกใหม่</v-btn>
       </div>
 
       <v-spacer></v-spacer>
 
       <div v-if="isAuth">
-        <label>NamkheangV</label>
+        <label>{{ user.name }}</label>
         <v-divider vertical class="pa-2"></v-divider>
         <v-btn text @click="logout"> ออกจากระบบ </v-btn>
       </div>
@@ -49,9 +50,7 @@
           </v-card-text>
 
           <v-card-actions class="d-flex justify-center mt-6">
-            <v-btn block dark v-on:click="LoaderOptionsPlugin"
-              >เข้าสู่ระบบ</v-btn
-            >
+            <v-btn block dark v-on:click="login">เข้าสู่ระบบ</v-btn>
           </v-card-actions>
 
           <v-divider class="ma-5"></v-divider>
@@ -194,6 +193,10 @@ export default {
         (v) => !!v || 'กรุณาใส่รหัสผ่าน',
         (v) => (v && v.length >= 8) || 'รหัสผ่านต้องมีอย่างน้อย 8 ตัว',
       ],
+
+      user: {
+        name: 'NamkheangV',
+      },
     }
   },
 

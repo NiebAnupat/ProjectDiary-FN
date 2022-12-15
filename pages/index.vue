@@ -1,5 +1,21 @@
 <template>
   <div>
+    <!-- Search -->
+    <div class="mt-8">
+      <v-row>
+        <v-spacer></v-spacer>
+        <v-col cols="6"></v-col>
+        <v-text-field
+          v-model="search"
+          prepend-icon="mdi-magnify"
+          label="ค้นหาบันทึก"
+          single-line
+          class="mb-4"
+        ></v-text-field>
+        <v-btn class="my-auto ml-3" text>ค้นหา</v-btn>
+      </v-row>
+    </div>
+
     <div class="mt-6">
       <v-simple-table>
         <template v-slot:default>
@@ -45,6 +61,7 @@
               <v-row>
                 <v-col cols="8">
                   <v-text-field
+                    v-model="diary.title"
                     solo
                     prepend-inner-icon="mdi-pencil"
                     label="หัวข้อเรื่อง"
@@ -53,6 +70,7 @@
                 </v-col>
                 <v-col cols="4">
                   <v-text-field
+                    v-model="diary.date"
                     solo
                     prepend-inner-icon="mdi-calendar"
                     label="วันที่"
@@ -64,6 +82,7 @@
               <v-divider class="mt-n4 mb-6"></v-divider>
 
               <v-textarea
+                v-model="diary.detail"
                 label="รายละเอียด"
                 placeholder="รายละเอียด"
                 solo
@@ -85,6 +104,15 @@ export default {
   data() {
     return {
       dialog: false,
+      search: '',
+
+      diary: {
+        id: 1,
+        title: 'วันอากาศดีๆ ที่ไม่มีเธออยู่',
+        date: '2022-12-15',
+        detail:
+          '         ค่ำคืนมีหมู่ดาวมากมาย แต่ฉันเห็นแค่เพียงเธอตลอดมา ซึ่งเธอก็ไม่มีฉันเลยในสายตา แม้รู้เราต่างกันเพียงใด แม้รู้เธอมีใครที่เธอต้องการ แต่อยากทุ่มเททุก ๆ อย่างให้รู้ไป',
+      },
     }
   },
 }
