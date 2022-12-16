@@ -69,7 +69,7 @@
       <v-snackbar v-model="success" color="success" timeout="3000">
         บันทึกสำเร็จ
         <template v-slot:action="{ attrs }">
-          <v-btn text color="white" v-bind="attrs" @click="snackbar = false">
+          <v-btn text color="white" v-bind="attrs" @click="success = false">
             ปิด
           </v-btn>
         </template>
@@ -78,7 +78,7 @@
       <v-snackbar v-model="fail" color="red" timeout="3000">
         บันทึกไม่สำเร็จ
         <template v-slot:action="{ attrs }">
-          <v-btn text color="white" v-bind="attrs" @click="snackbar = false">
+          <v-btn text color="white" v-bind="attrs" @click="fail = false">
             ปิด
           </v-btn>
         </template>

@@ -55,7 +55,7 @@
 
       <!-- Detail Dialog -->
       <div>
-        <v-dialog v-model="dialog" scrollable :overlay="false" max-width="800">
+        <v-dialog v-model="dialog" :overlay="false" max-width="800">
           <v-card height="780" class="pa-4">
             <v-card-text class="mt-4">
               <v-row>
