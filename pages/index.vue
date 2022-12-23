@@ -17,41 +17,19 @@
     </div>
 
     <div class="mt-6">
-      <v-simple-table>
-        <template v-slot:default>
-          <thead>
-            <tr>
-              <th class="text-center">หัวข้อ</th>
-              <th class="text-center">วันที่</th>
-              <th class="text-center"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="text-center">ขี้เกียจทำงานจังครับ</td>
-              <td class="text-center">14-12-65</td>
-              <td class="text-center">
-                <v-tooltip top>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn icon v-bind="attrs" v-on="on" @click="dialog = true">
-                      <v-icon color="grey" class="mx-1"> mdi-book</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>ดูบันทึก</span>
-                </v-tooltip>
-                <v-tooltip top>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn icon v-bind="attrs" v-on="on" nuxt>
-                      <v-icon color="red" class="mx-1"> mdi-minus</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>ลบบันทึก</span>
-                </v-tooltip>
-              </td>
-            </tr>
-          </tbody>
+      <!-- Table -->
+      <v-data-table :headers="headers" :items="diaries" class="elevation-1">
+        <template v-slot:item.actions="{ item }">
+          <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon v-bind="attrs" v-on="on" nuxt @click="dialog = true">
+                <v-icon color="grey" class="mx-1"> mdi-book </v-icon>
+              </v-btn>
+            </template>
+            <span>รายละเอียด</span>
+          </v-tooltip>
         </template>
-      </v-simple-table>
+      </v-data-table>
 
       <!-- Detail Dialog -->
       <div>
@@ -61,7 +39,7 @@
               <v-row>
                 <v-col cols="8">
                   <v-text-field
-                    v-model="diary.title"
+                    v-model="details.title"
                     solo
                     prepend-inner-icon="mdi-pencil"
                     label="หัวข้อเรื่อง"
@@ -70,7 +48,7 @@
                 </v-col>
                 <v-col cols="4">
                   <v-text-field
-                    v-model="diary.date"
+                    v-model="details.date"
                     solo
                     prepend-inner-icon="mdi-calendar"
                     label="วันที่"
@@ -82,7 +60,7 @@
               <v-divider class="mt-n4 mb-6"></v-divider>
 
               <v-textarea
-                v-model="diary.detail"
+                v-model="details.detail"
                 label="รายละเอียด"
                 placeholder="รายละเอียด"
                 solo
@@ -106,7 +84,44 @@ export default {
       dialog: false,
       search: '',
 
-      diary: {
+      headers: [
+        {
+          text: 'หัวข้อ',
+          align: 'center',
+          sortable: false,
+          value: 'title',
+          class: 'text-center',
+        },
+        {
+          text: 'วันที่',
+          align: 'center',
+          sortable: false,
+          value: 'date',
+          class: 'text-center',
+        },
+        {
+          text: '',
+          align: 'center',
+          sortable: false,
+          value: 'actions',
+          class: 'text-center',
+        },
+      ],
+
+      diaries: [
+        {
+          title: 'วันพระ',
+          date: '2022-11-01',
+          actions: '',
+        },
+        {
+          title: 'วันคริสต์มาส',
+          date: '2022-12-25',
+          actions: '',
+        },
+      ],
+
+      details: {
         id: 1,
         title: 'วันอากาศดีๆ ที่ไม่มีเธออยู่',
         date: '2022-12-15',
