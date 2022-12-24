@@ -17,9 +17,8 @@
         <v-divider vertical class="pa-2"></v-divider>
         <v-btn text @click="logout"> ออกจากระบบ</v-btn>
       </div>
-      <div v-else>
-        <v-btn text @click="loginDia = true"> เข้าสู่ระบบ</v-btn>
-      </div>
+      <v-btn v-else text @click="loginDia = true"> เข้าสู่ระบบ</v-btn>
+
     </v-app-bar>
 
     <!-- Login Dialog -->
@@ -220,11 +219,11 @@ export default {
 
   computed: {
     async isAuth() {
-      const user = await this.$store.getters["Auth/user"]
+      const user = await this.$store.getters["Auth/user"];
       if (user.length > 0) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     }
   },
