@@ -8,7 +8,7 @@
 import todayCard from '~/components/todayCard.vue'
 export default {
   name: 'IndexPage',
-
+  middleware: 'auth',
   components: {
     todayCard,
   },
