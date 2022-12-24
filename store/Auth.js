@@ -1,6 +1,6 @@
 export const state = () => ({
   isAuth: false,
-  user: null
+  user: false
 });
 
 export const getters = {

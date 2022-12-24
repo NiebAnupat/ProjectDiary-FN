@@ -12,8 +12,8 @@
 
       <v-spacer></v-spacer>
 
-      <div v-if="!!$store.getters['Auth/user']">
-        <label>{{ $store.getters["Auth/user"].displayName }}</label>
+      <div v-if="$store.getters['Auth/user']">
+        <label>{{ $store.getters["Auth/user"]?.displayName }}</label>
         <v-divider vertical class="pa-2"></v-divider>
         <v-btn text @click="logout"> ออกจากระบบ</v-btn>
       </div>
@@ -219,8 +219,13 @@ export default {
   },
 
   computed: {
-    isAuth() {
-      return this.$store.getters["Auth/isAuth"];
+    async isAuth() {
+      const user = await this.$store.getters["Auth/user"]
+      if (user.length > 0) {
+        return true
+      } else {
+        return false
+      }
     }
   },
 
