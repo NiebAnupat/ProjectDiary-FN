@@ -21,8 +21,6 @@
                 solo
                 readonly
                 prepend-inner-icon="mdi-calendar"
-                v-bind="attrs"
-                v-on="on"
               ></v-text-field>
             </v-col>
           </v-row>

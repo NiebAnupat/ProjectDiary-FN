@@ -6,18 +6,20 @@
 
       <div class="mx-6">
         <v-btn text to="/">บันทึกทั้งหมด</v-btn>
-        <v-btn text to="/today">บันทึกวันนี้</v-btn>
-        <v-btn text to="/record">บันทึกใหม่</v-btn>
+        <v-btn text :disabled="!$store.getters['Auth/user']" to="/today">บันทึกวันนี้</v-btn>
+        <v-btn text :disabled="!$store.getters['Auth/user']" to="/record">บันทึกใหม่</v-btn>
       </div>
 
       <v-spacer></v-spacer>
 
-      <div v-if="$store.getters['Auth/user']">
-        <label>{{ $store.getters["Auth/user"]?.displayName }}</label>
-        <v-divider vertical class="pa-2"></v-divider>
-        <v-btn text @click="logout"> ออกจากระบบ</v-btn>
-      </div>
-      <v-btn v-else text @click="loginDia = true"> เข้าสู่ระบบ</v-btn>
+      <client-only>
+        <div v-if="$store.getters['Auth/user']">
+          <label>{{ $store.getters["Auth/user"]?.displayName }}</label>
+          <v-divider vertical class="pa-2"></v-divider>
+          <v-btn text @click="logout"> ออกจากระบบ</v-btn>
+        </div>
+        <v-btn v-else text @click="loginDia = true"> เข้าสู่ระบบ</v-btn>
+      </client-only>
 
     </v-app-bar>
 

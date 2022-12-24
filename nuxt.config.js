@@ -3,8 +3,8 @@ import colors from 'vuetify/es5/util/colors'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - Frontend',
-    title: 'Frontend',
+    titleTemplate: 'MyDiary',
+    title: 'MyDiary',
     htmlAttrs: {
       lang: 'en',
     },
@@ -18,6 +18,8 @@ export default {
   },
 
   target: 'static',
+
+
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],
@@ -39,6 +41,7 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     'nuxt-sweetalert2',
+    'nuxt-client-init-module',
     [
       '@nuxtjs/firebase',
       {
