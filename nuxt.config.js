@@ -36,6 +36,31 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    [
+      '@nuxtjs/firebase',
+      {
+        config: {
+          apiKey: 'AIzaSyAffJXsLMY5AumIgqx9Zhan96BDEbGdzp0',
+          authDomain: 'project-diary-1324b.firebaseapp.com',
+          projectId: 'project-diary-1324b',
+          storageBucket: 'project-diary-1324b.appspot.com',
+          messagingSenderId: '257892813618',
+          appId: '1:257892813618:web:4932f40e8f93ee2fde252b',
+          measurementId: 'G-VG0RQL2JDS',
+        },
+        services: {
+          auth: {
+            persistence: 'local', // default
+            initialize: {
+              // onAuthStateChangedMutation: 'ON_AUTH_STATE_CHANGED_MUTATION',
+              // onAuthStateChangedAction: 'onAuthStateChangedAction',
+              subscribeManually: false,
+            },
+          },
+          firestore: true,
+        },
+      },
+    ],
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

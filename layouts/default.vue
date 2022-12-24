@@ -122,7 +122,7 @@
               >ยกเลิก</v-btn
             >
             <v-spacer></v-spacer>
-            <v-btn text>ตกลง</v-btn>
+            <v-btn text @click="register">ตกลง</v-btn>
           </v-card-actions>
 
           <v-card-actions class="d-flex justify-center"> </v-card-actions>
@@ -213,6 +213,18 @@ export default {
         this.loginDia = false
       } else {
         this.$store.dispatch('Auth/setAuthFalse')
+      }
+    },
+
+    async register() {
+      if (this.username != '' && this.email != '' && this.password != '') {
+        const user = {
+          email: this.email,
+          password: this.password,
+          displayName: this.username,
+        }
+        if (await this.$store.dispatch('Auth/registerWithEmail', user))
+          this.registerDia = false
       }
     },
 
