@@ -1,83 +1,99 @@
 <template>
   <div>
-    <!-- Search -->
-    <div class="mt-8">
-      <v-row>
-        <v-spacer></v-spacer>
-        <v-col cols="6"></v-col>
-        <v-text-field
-          v-model="search"
-          prepend-icon="mdi-magnify"
-          label="ค้นหาบันทึก"
-          single-line
-          class="mb-4"
-        ></v-text-field>
-      </v-row>
+    <div v-if="$store.getters['Auth/user']">
+      <!-- Search -->
+      <div class="mt-8">
+        <v-row>
+          <v-spacer></v-spacer>
+          <v-col cols="6"></v-col>
+          <v-text-field
+            v-model="search"
+            prepend-icon="mdi-magnify"
+            label="ค้นหาบันทึก"
+            single-line
+            class="mb-4"
+          ></v-text-field>
+        </v-row>
+      </div>
+
+      <div class="mt-6">
+        <!-- Table -->
+        <v-data-table
+          :headers="headers"
+          :items="diaries"
+          :search="search"
+          class="elevation-1"
+        >
+          <template v-slot:item.actions="{ item }">
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  icon
+                  v-bind="attrs"
+                  v-on="on"
+                  nuxt
+                  @click="dialog = true"
+                >
+                  <v-icon color="grey" class="mx-1"> mdi-book</v-icon>
+                </v-btn>
+              </template>
+              <span>รายละเอียด</span>
+            </v-tooltip>
+          </template>
+        </v-data-table>
+
+        <!-- Detail Dialog -->
+        <div>
+          <v-dialog v-model="dialog" :overlay="false" max-width="800">
+            <v-card height="780" class="pa-4">
+              <v-card-text class="mt-4">
+                <v-row>
+                  <v-col cols="8">
+                    <v-text-field
+                      v-model="details.title"
+                      solo
+                      prepend-inner-icon="mdi-pencil"
+                      label="หัวข้อเรื่อง"
+                      readonly
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="4">
+                    <v-text-field
+                      v-model="details.date"
+                      solo
+                      prepend-inner-icon="mdi-calendar"
+                      label="วันที่"
+                      readonly
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <v-divider class="mt-n4 mb-6"></v-divider>
+
+                <v-textarea
+                  v-model="details.detail"
+                  label="รายละเอียด"
+                  placeholder="รายละเอียด"
+                  solo
+                  rows="20"
+                  readonly
+                ></v-textarea>
+              </v-card-text>
+            </v-card>
+          </v-dialog>
+        </div>
+      </div>
     </div>
 
-    <div class="mt-6">
-      <!-- Table -->
-      <v-data-table :headers="headers" :items="diaries" :search="search" class="elevation-1">
-        <template v-slot:item.actions="{ item }">
-          <v-tooltip top>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn icon v-bind="attrs" v-on="on" nuxt @click="dialog = true">
-                <v-icon color="grey" class="mx-1"> mdi-book</v-icon>
-              </v-btn>
-            </template>
-            <span>รายละเอียด</span>
-          </v-tooltip>
-        </template>
-      </v-data-table>
-
-      <!-- Detail Dialog -->
-      <div>
-        <v-dialog v-model="dialog" :overlay="false" max-width="800">
-          <v-card height="780" class="pa-4">
-            <v-card-text class="mt-4">
-              <v-row>
-                <v-col cols="8">
-                  <v-text-field
-                    v-model="details.title"
-                    solo
-                    prepend-inner-icon="mdi-pencil"
-                    label="หัวข้อเรื่อง"
-                    readonly
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="4">
-                  <v-text-field
-                    v-model="details.date"
-                    solo
-                    prepend-inner-icon="mdi-calendar"
-                    label="วันที่"
-                    readonly
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-
-              <v-divider class="mt-n4 mb-6"></v-divider>
-
-              <v-textarea
-                v-model="details.detail"
-                label="รายละเอียด"
-                placeholder="รายละเอียด"
-                solo
-                rows="20"
-                readonly
-              ></v-textarea>
-            </v-card-text>
-          </v-card>
-        </v-dialog>
-      </div>
+    <div v-else class="d-flex justify-center my-16 grey--text">
+      <h2>กรุณาเข้าสู่ระบบ</h2>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
-  name: "IndexPage",
+  name: 'IndexPage',
 
   // async asyncData({store,req}) {
   //    await store.dispatch('nuxtClientInit', { req })
@@ -96,50 +112,50 @@ export default {
 
       headers: [
         {
-          text: "หัวข้อ",
-          align: "center",
+          text: 'หัวข้อ',
+          align: 'center',
           sortable: false,
-          value: "title",
-          class: "text-center"
+          value: 'title',
+          class: 'text-center',
         },
         {
-          text: "วันที่",
-          align: "center",
+          text: 'วันที่',
+          align: 'center',
           sortable: false,
-          value: "date",
-          class: "text-center"
+          value: 'date',
+          class: 'text-center',
         },
         {
-          text: "",
-          align: "center",
+          text: '',
+          align: 'center',
           sortable: false,
-          value: "actions",
-          class: "text-center"
-        }
+          value: 'actions',
+          class: 'text-center',
+        },
       ],
 
       diaries: [
         {
-          title: "วันพระ",
-          date: "2022-11-01",
-          actions: ""
+          title: 'วันพระ',
+          date: '2022-11-01',
+          actions: '',
         },
         {
-          title: "วันคริสต์มาส",
-          date: "2022-12-25",
-          actions: ""
-        }
+          title: 'วันคริสต์มาส',
+          date: '2022-12-25',
+          actions: '',
+        },
       ],
 
       details: {
         id: 1,
-        title: "วันอากาศดีๆ ที่ไม่มีเธออยู่",
-        date: "2022-12-15",
+        title: 'วันอากาศดีๆ ที่ไม่มีเธออยู่',
+        date: '2022-12-15',
         detail:
-          "         ค่ำคืนมีหมู่ดาวมากมาย แต่ฉันเห็นแค่เพียงเธอตลอดมา ซึ่งเธอก็ไม่มีฉันเลยในสายตา แม้รู้เราต่างกันเพียงใด แม้รู้เธอมีใครที่เธอต้องการ แต่อยากทุ่มเททุก ๆ อย่างให้รู้ไป"
-      }
-    };
-  }
-};
+          '         ค่ำคืนมีหมู่ดาวมากมาย แต่ฉันเห็นแค่เพียงเธอตลอดมา ซึ่งเธอก็ไม่มีฉันเลยในสายตา แม้รู้เราต่างกันเพียงใด แม้รู้เธอมีใครที่เธอต้องการ แต่อยากทุ่มเททุก ๆ อย่างให้รู้ไป',
+      },
+    }
+  },
+}
 </script>
 <style lang="scss"></style>
