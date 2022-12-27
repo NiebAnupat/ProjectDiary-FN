@@ -42,7 +42,6 @@ export const actions = {
   },
 
   async registerWithEmail({ commit }, payload) {
-    console.log(payload);
     const { email, password, displayName } = payload;
     try {
       await this.$fire.auth.createUserWithEmailAndPassword(email, password);

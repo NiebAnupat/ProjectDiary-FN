@@ -34,6 +34,7 @@
           <v-card-text class="mt-10">
             <!-- Input Email -->
             <v-text-field
+              ref="loginEmail"
               prepend-inner-icon="mdi-email"
               v-model="email"
               label="อีเมล"
@@ -43,9 +44,11 @@
 
             <!-- Input Password -->
             <v-text-field
+              ref="loginPassword"
               prepend-inner-icon="mdi-lock"
               v-model="password"
               label="รหัสผ่าน"
+              :rules="passwordRules"
               :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
               :type="show1 ? 'text' : 'password'"
               @click:append="show1 = !show1"
@@ -54,8 +57,8 @@
             ></v-text-field>
           </v-card-text>
 
-          <v-card-actions class="d-flex justify-center mt-6">
-            <v-btn block dark @click="login">เข้าสู่ระบบ</v-btn>
+          <v-card-actions class="d-flex justify-center mt-6" >
+            <v-btn block :disabled="password?.length < 8 || !email" color="black" class="white--text"  @click="login">เข้าสู่ระบบ</v-btn>
           </v-card-actions>
 
           <v-divider class="ma-5"></v-divider>
@@ -72,7 +75,7 @@
             </v-col>
             <v-col cols="6">
               <v-card-actions class="d-flex justify-center">
-                <v-btn text @click=";(registerDia = true), (loginDia = false)"
+                <v-btn text @click="(registerDia = true); (loginDia = false)"
                 >สมัครสมาชิก
                 </v-btn
                 >
@@ -94,6 +97,7 @@
           <v-card-text class="mt-10">
             <!-- Input Name -->
             <v-text-field
+              ref="registerName"
               prepend-inner-icon="mdi-account"
               v-model="username"
               label="ชื่อผู้ใช้"
@@ -104,6 +108,7 @@
 
             <!-- Input Email -->
             <v-text-field
+              ref="registerEmail"
               prepend-inner-icon="mdi-email"
               v-model="email"
               label="อีเมล"
@@ -114,6 +119,7 @@
 
             <!-- Input Password -->
             <v-text-field
+              ref="registerPassword"
               prepend-inner-icon="mdi-lock"
               v-model="password"
               label="รหัสผ่าน"
@@ -129,12 +135,12 @@
           <!-- Regiter Buttons -->
 
           <v-card-actions class="d-flex justify-center mt-10">
-            <v-btn text @click=";(registerDia = false), (loginDia = true)"
+            <v-btn text  @click=";(registerDia = false), (loginDia = true)"
             >ยกเลิก
             </v-btn
             >
             <v-spacer></v-spacer>
-            <v-btn text @click="register">ตกลง</v-btn>
+            <v-btn text :disabled="!username || !email || password?.length < 8" @click="register">ตกลง</v-btn>
           </v-card-actions>
 
           <v-card-actions class="d-flex justify-center"></v-card-actions>
@@ -148,7 +154,7 @@
         <v-card height="450" :loading="forgotLoading" class="pa-4">
           <div class="d-flex">
             <v-card-actions>
-              <v-btn icon @click=";(forgetDia = false), (loginDia = true)"
+              <v-btn icon  @click=";(forgetDia = false), (loginDia = true)"
               >
                 <v-icon>mdi-arrow-left</v-icon>
               </v-btn
@@ -171,7 +177,7 @@
             >
           </v-card-text>
           <v-card-actions>
-            <v-btn dark block @click="resetPassword" class="mt-16">ยืนยัน</v-btn>
+            <v-btn color="black" block :disabled="!fgEmail" @click="resetPassword" class="white--text mt-16">ยืนยัน</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -249,11 +255,12 @@ export default {
         });
       }
       this.clearText();
-
+      this.$refs.loginEmail.focus()
+      this.$refs.loginPassword.reset()
     },
 
     async register() {
-      if (this.username != "" && this.email != "" && this.password != "") {
+      if (this.username != "" && this.email != "" && this.password.length >= 8) {
         this.registerLoading = true;
         const user = {
           email: this.email,
@@ -281,7 +288,7 @@ export default {
         timer: 2000,
         showConfirmButton: false
       });
-      this.clearText();
+      this.clearRegister();
     },
 
     async resetPassword() {
@@ -335,7 +342,6 @@ export default {
           await this.$router.replace("/");
         }
       });
-
     },
 
     clearText() {
@@ -343,7 +349,17 @@ export default {
       this.email = "";
       this.password = "";
       this.fgEmail = "";
-    }
+    },
+
+    clearRegister() {
+      this.username = "";
+      this.email = "";
+      this.password = "";
+      this.$refs.registerName.reset()
+      this.$refs.registerEmail.reset()
+      this.$refs.registerPassword.reset()
+      this.$refs.registerName.focus()
+    },
   }
 };
 </script>
