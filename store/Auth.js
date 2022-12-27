@@ -57,7 +57,6 @@ export const actions = {
         .set({
           displayName: displayName,
           email: email,
-          password: password,
           uid: this.$fire.auth.currentUser.uid
         });
 

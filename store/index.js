@@ -23,7 +23,6 @@ export const actions = {
     const user = {
       uid: decoded.user_id,
       email: decoded.email,
-      // password: decoded.password,
       displayName: decoded.name
     };
 
