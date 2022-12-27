@@ -1,13 +1,13 @@
 <script src="../store/Auth.js"></script>
 <template>
   <v-app>
-    <v-app-bar dark>
+    <v-app-bar dark app>
       <v-toolbar-title class="mx-4"> My Diary</v-toolbar-title>
 
       <div class="mx-6">
-        <v-btn text to="/">บันทึกทั้งหมด</v-btn>
+        <v-btn text :disabled="!$store.getters['Auth/user']" to="/">บันทึกทั้งหมด</v-btn>
         <v-btn text :disabled="!$store.getters['Auth/user']" to="/today">บันทึกวันนี้</v-btn>
-        <v-btn text :disabled="!$store.getters['Auth/user']" to="/record">บันทึกใหม่</v-btn>
+        <v-btn text :disabled="!$store.getters['Auth/user']" to="/record">เพิ่มบันทึกใหม่</v-btn>
       </div>
 
       <v-spacer></v-spacer>
@@ -178,9 +178,11 @@
     </div>
 
     <!-- Pages -->
-    <v-container class="ma-auto" style="height: 95%">
-      <nuxt class="ml-10 pb-5" />
-    </v-container>
+    <v-main>
+      <v-container  >
+        <nuxt  />
+      </v-container>
+    </v-main>
   </v-app>
 </template>
 
@@ -217,17 +219,6 @@ export default {
         name: "NamkheangV"
       }
     };
-  },
-
-  computed: {
-    async isAuth() {
-      const user = await this.$store.getters["Auth/user"];
-      if (user.length > 0) {
-        return true;
-      } else {
-        return false;
-      }
-    }
   },
 
   methods: {
@@ -322,14 +313,28 @@ export default {
     },
 
     async logout() {
-      if (await this.$store.dispatch("Auth/logout")) {
-        this.$swal({
-          title: "ออกจากระบบสำเร็จ",
-          type: "success",
-          timer: 2000,
-          showConfirmButton: false
-        });
-      }
+
+      // confirm logout dialog
+      this.$swal({
+        title: "ต้องการออกจากระบบ?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ใช่",
+        cancelButtonText: "ไม่"
+      }).then(async (result) => {
+        if (result.value) {
+          await this.$store.dispatch("Auth/logout");
+          this.$swal({
+            title: "ออกจากระบบสำเร็จ",
+            type: "success",
+            timer: 2000,
+            showConfirmButton: false
+          });
+        }
+      });
+
     },
 
     clearText() {

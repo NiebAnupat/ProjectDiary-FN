@@ -24,7 +24,7 @@ export const mutations = {
 
 export const actions = {
 
-  async loginWithEmailAndPassword({ commit }, payload) {
+  async loginWithEmailAndPassword({ commit,dispatch }, payload) {
     const { email, password } = payload;
     try {
       const { user } = await this.$fire.auth.signInWithEmailAndPassword(email, password);
@@ -32,6 +32,8 @@ export const actions = {
       commit('setUser', { uid, displayName });
       const token = await this.$fire.auth.currentUser.getIdToken()
       Cookies.set('access_token', token)
+      dispatch('note/fetchNotes',null,{root:true})
+      dispatch('note/fetchTodayNotes',null,{root:true})
       return true
     } catch (error) {
       console.log(error);
@@ -80,9 +82,10 @@ export const actions = {
     }
   },
 
-   logout({ commit }) {
+   logout({ commit,dispatch }) {
      this.$fire.auth.signOut().then(async () => {
        commit('setUser', null);
+       dispatch('note/clearState', null, { root: true });
        await Cookies.remove('access_token')
        return true
      }).catch((error) => {

@@ -28,6 +28,8 @@ export const actions = {
     };
 
     dispatch("Auth/setUser", user);
+    dispatch("note/fetchNotes")
+    dispatch("note/fetchTodayNotes")
 
   }
 

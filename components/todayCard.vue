@@ -7,7 +7,7 @@
           <v-row>
             <v-col cols="8">
               <v-text-field
-                v-model="diary.title"
+                v-model="note.title"
                 solo
                 prepend-inner-icon="mdi-pencil"
                 label="หัวข้อเรื่อง"
@@ -16,7 +16,7 @@
             </v-col>
             <v-col cols="4">
               <v-text-field
-                v-model="diary.date"
+                v-model="note.date"
                 label="วันที่"
                 solo
                 readonly
@@ -32,7 +32,7 @@
       <!-- Body -->
       <v-card-text>
         <v-textarea
-          v-model="diary.detail"
+          v-model="note.detail"
           label="รายละเอียด"
           placeholder="รายละเอียด"
           solo
@@ -46,6 +46,14 @@
 
 <script>
 export default {
+
+  props:{
+    note: {
+      type: Object,
+      required: true
+    }
+  },
+
   data() {
     return {
       date: null,

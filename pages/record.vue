@@ -7,6 +7,7 @@
           <v-row>
             <v-col cols="8">
               <v-text-field
+                v-model="note.title"
                 solo
                 prepend-inner-icon="mdi-pencil"
                 label="หัวข้อเรื่อง"
@@ -23,7 +24,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="date"
+                    v-model="note.date"
                     label="วันที่"
                     solo
                     prepend-inner-icon="mdi-calendar"
@@ -32,7 +33,7 @@
                   ></v-text-field>
                 </template>
                 <v-date-picker
-                  v-model="date"
+                  v-model="note.date"
                   @input="datePicker = false"
                   scrollable
                   dark
@@ -43,7 +44,7 @@
         </v-card-text>
         <v-card-actions class="mt-n6">
           <v-spacer></v-spacer>
-          <v-btn dark @click=";(fail = false), (success = true)">
+          <v-btn dark @click="submit">
             <v-icon>mdi-arrow-up-bold</v-icon>
             บันทึก
           </v-btn>
@@ -55,6 +56,7 @@
       <!-- Body -->
       <v-card-text>
         <v-textarea
+          v-model="note.detail"
           label="รายละเอียด"
           placeholder="รายละเอียด"
           solo
@@ -66,22 +68,13 @@
 
     <!-- Snackbar -->
     <div>
-      <v-snackbar v-model="success" color="success" timeout="3000">
+      <v-snackbar v-model="isSuccessful" color="success" timeout="2000">
         บันทึกสำเร็จ
-        <template v-slot:action="{ attrs }">
-          <v-btn text color="white" v-bind="attrs" @click="success = false">
-            ปิด
-          </v-btn>
-        </template>
+
       </v-snackbar>
 
-      <v-snackbar v-model="fail" color="red" timeout="3000">
+      <v-snackbar v-model="isFailed" color="red" timeout="2000">
         บันทึกไม่สำเร็จ
-        <template v-slot:action="{ attrs }">
-          <v-btn text color="white" v-bind="attrs" @click="fail = false">
-            ปิด
-          </v-btn>
-        </template>
       </v-snackbar>
     </div>
   </div>
@@ -89,16 +82,33 @@
 
 <script>
 export default {
-  name: 'IndexPage',
-  middleware: 'auth',
+  name: "IndexPage",
+  middleware: "auth",
   data() {
     return {
-      success: false,
-      fail: false,
-      date: null,
       datePicker: false,
-    }
+      note: {
+        title: "",
+        detail: "",
+        date: new Date().toISOString().substr(0, 10),
+      },
+      isFailed: false,
+      isSuccessful: false
+    };
   },
-}
+  methods: {
+    async submit() {
+      try {
+        await this.$store.dispatch("note/create", this.note);
+        this.isSuccessful = true;
+        this.note.title = "";
+        this.note.detail = "";
+        this.note.date = new Date().toISOString().slice(0, 10);
+      } catch (error) {
+        this.isFailed = true;
+      }
+    }
+  }
+};
 </script>
 <style lang="scss"></style>
