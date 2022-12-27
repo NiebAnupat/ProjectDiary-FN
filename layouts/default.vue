@@ -332,6 +332,7 @@ export default {
             timer: 2000,
             showConfirmButton: false
           });
+          await this.$router.replace("/");
         }
       });
 
